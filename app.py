@@ -246,10 +246,11 @@ def merge_onnx_and_event(
     
     print(f"DEBUG: best_label={best_label}, best_sim={best_sim}, margin={margin}")
     
-    # Event detection thresholds (lowered for testing)
-    min_sim = 0.80
-    min_margin = 0.001
-    onnx_ceiling = 1.0  # Default ceiling
+    # Event detection thresholds - extremely strict to prevent artificial predictions
+    # Only override when there's clear, unambiguous evidence
+    min_sim = 0.98  # Require extremely high similarity for event override
+    min_margin = 0.20  # Require very clear margin over second best (embeddings are clustered)
+    onnx_ceiling = 0.40  # ONNX confidence above this blocks event override (only override when ONNX is very uncertain)
     
     onnx_is_event = is_event_label(onnx_name)
     print(f"DEBUG: onnx_is_event={onnx_is_event}")
@@ -263,20 +264,11 @@ def merge_onnx_and_event(
         return onnx_name, onnx_conf, False
     
     # ONNX predicts non-event, event index has match
-    if best_sim >= min_sim and margin >= min_margin:
-        if onnx_conf >= onnx_ceiling:
-            print(f"Event override blocked: {onnx_name}@{onnx_conf:.3f} >= onnx_ceiling={onnx_ceiling}")
-            return onnx_name, onnx_conf, False
-        print(f"Event override: {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
-        return best_label, onnx_conf, True
-    
-    # High similarity, low margin (degenerate cluster)
-    if best_sim >= 0.99 and margin >= 0.005:
-        if onnx_conf >= onnx_ceiling:
-            print(f"Event override (degenerate) blocked: {onnx_name}@{onnx_conf:.3f} >= onnx_ceiling={onnx_ceiling}")
-            return onnx_name, onnx_conf, False
-        print(f"Event override (degenerate): {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
-        return best_label, onnx_conf, True
+    # DISABLED: Too many false positives due to clustered embeddings
+    # Only allow event detection when ONNX itself predicts an event label (refinement mode above)
+    # This prevents artificial/forced predictions
+    print(f"Event override disabled for non-event ONNX predictions to prevent false positives")
+    return onnx_name, onnx_conf, False
     
     print(f"DEBUG: No override - sim={best_sim} < {min_sim} or margin={margin} < {min_margin}")
     return onnx_name, onnx_conf, False
