@@ -264,13 +264,13 @@ def merge_onnx_and_event(
         return onnx_name, onnx_conf, False
     
     # ONNX predicts non-event, event index has match
-    # DISABLED: Too many false positives due to clustered embeddings
-    # Only allow event detection when ONNX itself predicts an event label (refinement mode above)
-    # This prevents artificial/forced predictions
-    print(f"Event override disabled for non-event ONNX predictions to prevent false positives")
-    return onnx_name, onnx_conf, False
+    # Only override if event embedding has EXTREMELY high confidence (clear signal it's an event)
+    # This catches cases where ONNX is confidently wrong but event embedding knows it's an event
+    if best_sim >= 0.98 and margin >= 0.05:
+        print(f"Event override (high confidence): {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
+        return best_label, onnx_conf, True
     
-    print(f"DEBUG: No override - sim={best_sim} < {min_sim} or margin={margin} < {min_margin}")
+    print(f"Event override blocked: insufficient evidence (sim={best_sim:.4f}, margin={margin:.4f})")
     return onnx_name, onnx_conf, False
 
 
