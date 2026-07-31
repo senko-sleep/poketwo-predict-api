@@ -11,68 +11,53 @@ import onnxruntime as ort
 from PIL import Image
 import requests
 
-app = Flask(__name__)
-CORS(app)
-
 # Configuration
 ONNX_MODEL_PATH = os.environ.get("ONNX_MODEL_PATH", "pokemon_cnn_v2.onnx")
 LABELS_PATH = os.environ.get("LABELS_PATH", "labels_v2.json")
 INPUT_SIZE = 224
 
-# Global variables for model and labels
-session = None
-labels = []
-label_to_index = {}
+print(f"Loading ONNX model from {ONNX_MODEL_PATH}...")
+print(f"Current directory: {os.getcwd()}")
+print(f"Files in current directory: {os.listdir('.')[:10]}")
 
-
-def load_model():
-    """Load ONNX model and labels"""
-    global session, labels, label_to_index
-    
-    print(f"Loading ONNX model from {ONNX_MODEL_PATH}...")
-    
-    # Check if model file exists
-    if not os.path.exists(ONNX_MODEL_PATH):
-        print(f"ERROR: Model file not found at {ONNX_MODEL_PATH}")
-        print(f"Current directory: {os.getcwd()}")
-        print(f"Files in current directory: {os.listdir('.')}")
-        return
-    
-    # Load ONNX model
-    try:
+# Load ONNX model at module level (before app creation)
+try:
+    if os.path.exists(ONNX_MODEL_PATH):
         session = ort.InferenceSession(ONNX_MODEL_PATH, providers=['CPUExecutionProvider'])
         print(f"Model loaded successfully")
-    except Exception as e:
-        print(f"ERROR: Failed to load model: {e}")
-        return
-    
-    # Load labels
-    import json
-    if os.path.exists(LABELS_PATH):
-        with open(LABELS_PATH, "r", encoding="utf-8") as f:
-            labels_data = json.load(f)
-        
-        # Handle different label formats
-        if isinstance(labels_data, list):
-            # Simple array format
-            labels = labels_data
-            label_to_index = {label: i for i, label in enumerate(labels)}
-        elif isinstance(labels_data, dict):
-            # Check if it's index->name mapping or name->object mapping
-            if all(str(k).isdigit() for k in labels_data.keys()):
-                # Index to name mapping: {"0": "abomasnow", "1": "abra", ...}
-                labels = [labels_data[str(i)] for i in range(len(labels_data))]
-                label_to_index = {label: i for i, label in enumerate(labels)}
-            else:
-                # Name to object mapping: {"abomasnow": {"index": 0}, ...}
-                labels = sorted(labels_data.keys(), key=lambda k: labels_data[k].get("index", 0))
-                label_to_index = {label: i for i, label in enumerate(labels)}
-        
-        print(f"Loaded {len(labels)} labels")
     else:
-        print(f"Warning: Labels file not found at {LABELS_PATH}")
-        labels = []
-        label_to_index = {}
+        print(f"ERROR: Model file not found at {ONNX_MODEL_PATH}")
+        session = None
+except Exception as e:
+    print(f"ERROR: Failed to load model: {e}")
+    session = None
+
+# Load labels at module level
+labels = []
+label_to_index = {}
+import json
+if os.path.exists(LABELS_PATH):
+    with open(LABELS_PATH, "r", encoding="utf-8") as f:
+        labels_data = json.load(f)
+    
+    # Handle different label formats
+    if isinstance(labels_data, list):
+        labels = labels_data
+        label_to_index = {label: i for i, label in enumerate(labels)}
+    elif isinstance(labels_data, dict):
+        if all(str(k).isdigit() for k in labels_data.keys()):
+            labels = [labels_data[str(i)] for i in range(len(labels_data))]
+            label_to_index = {label: i for i, label in enumerate(labels)}
+        else:
+            labels = sorted(labels_data.keys(), key=lambda k: labels_data[k].get("index", 0))
+            label_to_index = {label: i for i, label in enumerate(labels)}
+    
+    print(f"Loaded {len(labels)} labels")
+else:
+    print(f"Warning: Labels file not found at {LABELS_PATH}")
+
+app = Flask(__name__)
+CORS(app)
 
 
 def preprocess_image(image_bytes):
@@ -192,8 +177,12 @@ def predict_url():
 
 
 if __name__ == "__main__":
-    # Load model on startup
-    load_model()
+    # Verify model loaded
+    if session is None:
+        print("ERROR: Model failed to load. Server cannot start.")
+        sys.exit(1)
+    
+    print("Model loaded successfully, starting server...")
     
     # Run server
     port = int(os.environ.get("PORT", 8080))
