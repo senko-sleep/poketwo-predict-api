@@ -22,5 +22,5 @@ RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json
 # Expose port
 EXPOSE 8080
 
-# Run with gunicorn for production (single worker for free tier memory limits)
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
+# Run with gunicorn for production (preload to load model before forking workers)
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--preload", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
