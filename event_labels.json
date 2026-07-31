@@ -1,0 +1,376 @@
+{
+  "beta_bellsprout": {
+    "added_at": "2026-04-03T02:26:49.212769",
+    "originals": [
+      "beta_bellsprout_1.png",
+      "beta_bellsprout_3.png",
+      "beta_bellsprout_3.png",
+      "beta_bellsprout_4.png",
+      "beta_bellsprout_4.png",
+      "beta_bellsprout_5.png",
+      "beta_bellsprout_5.png",
+      "beta_bellsprout_6.png",
+      "beta_bellsprout_6.png",
+      "beta_bellsprout_7.png",
+      "beta_bellsprout_7.png",
+      "beta_bellsprout_8.png"
+    ],
+    "augmented_count": 432,
+    "last_updated": "2026-04-03T05:01:28.179604"
+  },
+  "senko": {
+    "added_at": "2026-04-03T03:39:22.034256",
+    "originals": [
+      "senko_2.png",
+      "senko_3.png",
+      "senko_5.png",
+      "senko_7.png",
+      "senko_9.png"
+    ],
+    "augmented_count": 180,
+    "last_updated": "2026-04-03T05:33:35.113664"
+  },
+  "dokuyamitsuki": {
+    "added_at": "2026-04-03T04:17:17.096744",
+    "originals": [
+      "dokuyamitsuki_1.png",
+      "dokuyamitsuki_3.png",
+      "dokuyamitsuki_5.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-04-03T04:17:18.791928"
+  },
+  "beta_bayleef": {
+    "added_at": "2026-04-03T12:50:30.599567",
+    "originals": [
+      "beta_bayleef_1.png",
+      "beta_bayleef_3.png"
+    ],
+    "augmented_count": 72,
+    "last_updated": "2026-04-03T12:50:31.676642"
+  },
+  "swarming_ledyba": {
+    "added_at": "2026-05-07T21:33:52.050302",
+    "originals": [
+      "swarming_ledyba_1.png",
+      "swarming_ledyba_3.png"
+    ],
+    "augmented_count": 72,
+    "last_updated": "2026-05-07T21:33:52.679212"
+  },
+  "cicada_vikavolt": {
+    "added_at": "2026-05-07T23:46:06.071419",
+    "originals": [
+      "cicada_vikavolt_1.png"
+    ],
+    "augmented_count": 36,
+    "last_updated": "2026-05-07T23:46:06.071474"
+  },
+  "pokopia_ditto": {
+    "added_at": "2026-06-01T02:54:11.438253",
+    "originals": [
+      "pokopia_ditto_1.png",
+      "pokopia_ditto_3.png",
+      "pokopia_ditto_5.png",
+      "pokopia_ditto_7.png",
+      "pokopia_ditto_9.png",
+      "pokopia_ditto_11.png",
+      "pokopia_ditto_13.png",
+      "pokopia_ditto_15.png",
+      "pokopia_ditto_1.png",
+      "pokopia_ditto_3.png",
+      "pokopia_ditto_5.png",
+      "pokopia_ditto_7.png",
+      "pokopia_ditto_9.png"
+    ],
+    "augmented_count": 1404,
+    "last_updated": "2026-06-03T15:33:25.562066"
+  },
+  "prof_tangrowth": {
+    "added_at": "2026-06-03T15:09:07.066392",
+    "originals": [
+      "prof_tangrowth_1.png",
+      "prof_tangrowth_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:09:09.650849"
+  },
+  "chef_dente": {
+    "added_at": "2026-06-03T15:21:58.423641",
+    "originals": [
+      "chef_dente_1.png",
+      "chef_dente_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:22:00.484370"
+  },
+  "dj_rotom": {
+    "added_at": "2026-06-03T15:42:18.936178",
+    "originals": [
+      "dj_rotom_1.png",
+      "dj_rotom_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:42:21.105683"
+  },
+  "smearguru": {
+    "added_at": "2026-06-03T15:48:36.813917",
+    "originals": [
+      "smearguru_1.png",
+      "smearguru_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:48:39.301059"
+  },
+  "peakychu": {
+    "added_at": "2026-06-03T15:52:52.209539",
+    "originals": [
+      "peakychu_1.png",
+      "peakychu_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:52:54.583499"
+  },
+  "mosslax": {
+    "added_at": "2026-06-03T15:55:44.757626",
+    "originals": [
+      "mosslax_1.png",
+      "mosslax_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-06-03T15:55:47.055386"
+  },
+  "proud_new_yorker_braviary": {
+    "added_at": "2026-07-25T14:42:54.855797",
+    "originals": [
+      "proud_new_yorker_braviary_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-25T14:42:54.855823"
+  },
+  "proud_paulistano_luxray": {
+    "added_at": "2026-07-25T14:46:11.343129",
+    "originals": [
+      "proud_paulistano_luxray_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-25T14:46:11.343144"
+  },
+  "proud_taipeier_ursaring": {
+    "added_at": "2026-07-25T14:47:11.285953",
+    "originals": [
+      "proud_taipeier_ursaring_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-25T14:47:11.285967"
+  },
+  "proud_sydneysider_komala": {
+    "added_at": "2026-07-25T14:49:58.895295",
+    "originals": [
+      "proud_sydneysider_komala_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-25T14:49:58.895314"
+  },
+  "proud_amsterdammer_pyroar": {
+    "added_at": "2026-07-25T22:04:47.568976",
+    "originals": [
+      "proud_amsterdammer_pyroar_1.png",
+      "proud_amsterdammer_pyroar_3.png"
+    ],
+    "augmented_count": 216,
+    "last_updated": "2026-07-25T22:04:49.389577"
+  },
+  "asexual_flag_vivillon": {
+    "added_at": "2026-07-29T21:05:02.981094",
+    "originals": [
+      "asexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:05:02.981132"
+  },
+  "autoromantic_flag_vivillon": {
+    "added_at": "2026-07-29T21:05:23.457139",
+    "originals": [
+      "autoromantic_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:05:23.457176"
+  },
+  "bisexual_flag_vivillon": {
+    "added_at": "2026-07-29T21:05:43.270451",
+    "originals": [
+      "bisexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:05:43.270472"
+  },
+  "demiromantic_flag_vivillon": {
+    "added_at": "2026-07-29T21:06:03.438650",
+    "originals": [
+      "demiromantic_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:06:03.438674"
+  },
+  "demisexual_flag_vivillon": {
+    "added_at": "2026-07-29T21:11:06.531496",
+    "originals": [
+      "demisexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:11:06.531523"
+  },
+  "desinoromantic_flag_vivillon": {
+    "added_at": "2026-07-29T21:11:26.705067",
+    "originals": [
+      "desinoromantic_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-29T21:11:26.705099"
+  },
+  "gender_creative_flag_vivillon": {
+    "added_at": "2026-07-31T08:34:13.805674",
+    "originals": [
+      "gender_creative_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:13.805705"
+  },
+  "genderfluid_flag_vivillon": {
+    "added_at": "2026-07-31T08:34:36.670402",
+    "originals": [
+      "genderfluid_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:36.670473"
+  },
+  "genderqueer_flag_vivillon": {
+    "added_at": "2026-07-31T08:34:58.375477",
+    "originals": [
+      "genderqueer_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:58.375496"
+  },
+  "gynosexual_flag_vivillon": {
+    "added_at": "2026-07-31T08:35:19.965792",
+    "originals": [
+      "gynosexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:35:19.965814"
+  },
+  "lesbian_flag_vivillon": {
+    "added_at": "2026-07-31T08:35:41.099853",
+    "originals": [
+      "lesbian_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:35:41.099884"
+  },
+  "maverique_flag_vivillon": {
+    "added_at": "2026-07-31T08:36:02.860986",
+    "originals": [
+      "maverique_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:02.861020"
+  },
+  "neutrois_flag_vivillon": {
+    "added_at": "2026-07-31T08:36:24.326006",
+    "originals": [
+      "neutrois_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:24.326025"
+  },
+  "non_binary_flag_vivillon": {
+    "added_at": "2026-07-31T08:36:45.226322",
+    "originals": [
+      "non_binary_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:45.226340"
+  },
+  "pansexual_flag_vivillon": {
+    "added_at": "2026-07-31T08:37:06.093040",
+    "originals": [
+      "pansexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:06.093060"
+  },
+  "polysexual_flag_vivillon": {
+    "added_at": "2026-07-31T08:37:27.322175",
+    "originals": [
+      "polysexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:27.322194"
+  },
+  "pride_flag_vivillon": {
+    "added_at": "2026-07-31T08:37:47.693469",
+    "originals": [
+      "pride_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:47.693491"
+  },
+  "queer_flag_vivillon": {
+    "added_at": "2026-07-31T08:38:08.148466",
+    "originals": [
+      "queer_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:08.148485"
+  },
+  "transgender_flag_vivillon": {
+    "added_at": "2026-07-31T08:38:29.443400",
+    "originals": [
+      "transgender_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:29.443420"
+  },
+  "alloace_flag_vivillon": {
+    "added_at": "2026-07-31T08:38:50.005499",
+    "originals": [
+      "alloace_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:50.005535"
+  },
+  "androgyne_flag_vivillon": {
+    "added_at": "2026-07-31T08:39:10.501446",
+    "originals": [
+      "androgyne_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:10.501474"
+  },
+  "androsexual_flag_vivillon": {
+    "added_at": "2026-07-31T08:39:31.414852",
+    "originals": [
+      "androsexual_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:31.414885"
+  },
+  "aroace_flag_vivillon": {
+    "added_at": "2026-07-31T08:39:52.288450",
+    "originals": [
+      "aroace_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:52.288469"
+  },
+  "aromantic_flag_vivillon": {
+    "added_at": "2026-07-31T08:40:12.883831",
+    "originals": [
+      "aromantic_flag_vivillon_1.png"
+    ],
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:40:12.883873"
+  }
+}
