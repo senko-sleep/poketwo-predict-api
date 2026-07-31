@@ -16,8 +16,11 @@ COPY app.py .
 COPY pokemon_cnn_v2.onnx .
 COPY labels_v2.json .
 
+# Verify files exist
+RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json
+
 # Expose port
 EXPOSE 8080
 
-# Run with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "30", "app:app"]
+# Run with gunicorn for production (single worker for free tier memory limits)
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
