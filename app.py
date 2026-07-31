@@ -31,9 +31,20 @@ def load_model():
     
     print(f"Loading ONNX model from {ONNX_MODEL_PATH}...")
     
+    # Check if model file exists
+    if not os.path.exists(ONNX_MODEL_PATH):
+        print(f"ERROR: Model file not found at {ONNX_MODEL_PATH}")
+        print(f"Current directory: {os.getcwd()}")
+        print(f"Files in current directory: {os.listdir('.')}")
+        return
+    
     # Load ONNX model
-    session = ort.InferenceSession(ONNX_MODEL_PATH)
-    print(f"Model loaded successfully")
+    try:
+        session = ort.InferenceSession(ONNX_MODEL_PATH, providers=['CPUExecutionProvider'])
+        print(f"Model loaded successfully")
+    except Exception as e:
+        print(f"ERROR: Failed to load model: {e}")
+        return
     
     # Load labels
     import json
