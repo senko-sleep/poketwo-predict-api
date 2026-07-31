@@ -160,12 +160,29 @@ def predict():
 
 @app.route("/predict/url", methods=["POST"])
 def predict_url():
-    """Predict Pokemon from image URL"""
+    """Predict Pokemon from image URL (POST with JSON body)"""
     data = request.get_json()
     if not data or "url" not in data:
         return jsonify({"error": "URL not provided"}), 400
     
     url = data["url"]
+    image_bytes = download_image(url)
+    
+    if not image_bytes:
+        return jsonify({"error": "Failed to download image"}), 400
+    
+    # Use the same prediction logic
+    from flask import Response
+    return Response(predict().get_data(), mimetype='application/json')
+
+
+@app.route("/api/predict", methods=["GET"])
+def predict_api_get():
+    """Predict Pokemon from image URL (GET with query param)"""
+    url = request.args.get("url")
+    if not url:
+        return jsonify({"error": "URL query parameter required"}), 400
+    
     image_bytes = download_image(url)
     
     if not image_bytes:
