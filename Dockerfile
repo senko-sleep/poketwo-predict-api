@@ -15,9 +15,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY pokemon_cnn_v2.onnx .
 COPY labels_v2.json .
+COPY event_embedding_index.npz .
+COPY event_embedding_meta.json .
+COPY event_labels.json .
 
 # Verify files exist
-RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json
+RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json event_embedding_index.npz event_embedding_meta.json event_labels.json
 
 # Expose port
 EXPOSE 8080
