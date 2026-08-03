@@ -29,4 +29,5 @@ RUN ls -lh models/pokemon_cnn_v2.onnx models/labels_v2.json models/event_embeddi
 EXPOSE 8080
 
 # Run with gunicorn for production (preload to load model before forking workers)
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--preload", "--access-logfile", "-", "--error-logfile", "-", "run:app"]
+# Optimized for high throughput: multiple workers, lower timeout, keep-alive
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--worker-class", "sync", "--threads", "4", "--timeout", "30", "--keepalive", "2", "--preload", "--access-logfile", "-", "--error-logfile", "-", "run:app"]
