@@ -18,6 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 import hashlib
 from poketwo_feedback import PoketwoFeedback
+from perceptual_cache import PerceptualCache
 
 # Get the parent directory (project root)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -238,6 +239,24 @@ feedback_system = PoketwoFeedback() if FEEDBACK_ENABLED else None
 if FEEDBACK_ENABLED:
     print("Poketwo feedback system enabled")
 
+# Initialize perceptual cache
+PERCEPTUAL_CACHE_ENABLED = os.environ.get("PERCEPTUAL_CACHE_ENABLED", "true").lower() in ("true", "1", "yes")
+perceptual_cache = None
+
+if PERCEPTUAL_CACHE_ENABLED:
+    try:
+        cache_file = os.path.join(PROJECT_ROOT, "perceptual_cache.pkl")
+        perceptual_cache = PerceptualCache(
+            cache_file=cache_file,
+            canonical_size=64,
+            hamming_threshold=5,
+            max_cache_size=10000
+        )
+        print("Perceptual cache enabled")
+    except Exception as e:
+        print(f"Failed to initialize perceptual cache: {e}")
+        perceptual_cache = None
+
 
 def preprocess_image(image_bytes):
     """Preprocess image for ONNX model - optimized without TTA by default"""
@@ -357,6 +376,116 @@ def merge_onnx_and_event(
     return onnx_name, onnx_conf, False
 
 
+def run_onnx_prediction(image_bytes):
+    """Run ONNX prediction on image bytes (without caching)."""
+    # Preprocess image (single pass by default for speed)
+    input_data = preprocess_image(image_bytes)
+    
+    # Run inference
+    input_name = session.get_inputs()[0].name
+    output_name = session.get_outputs()[0].name
+    outputs = session.run([output_name], {input_name: input_data})
+    
+    # Handle different batch sizes based on TTA setting
+    if ENABLE_TTA:
+        # Aggregate predictions (logits) across TTA batch
+        logits = (outputs[0][0] + outputs[0][1]) * 0.5
+    else:
+        # Single forward pass
+        logits = outputs[0][0]
+    
+    # Apply softmax to get probabilities
+    exp_predictions = np.exp(logits - np.max(logits))
+    probabilities = exp_predictions / np.sum(exp_predictions)
+    
+    # Get top prediction
+    top_index = np.argmax(probabilities)
+    confidence = float(probabilities[top_index])
+    
+    # Get label name
+    if top_index < len(labels):
+        pokemon_name = labels[top_index]
+    else:
+        pokemon_name = "unknown"
+    
+    # Apply confidence adjustment from feedback system
+    if feedback_system:
+        adjustment = feedback_system.get_confidence_adjustment(pokemon_name)
+        confidence = max(0.0, min(1.0, confidence + adjustment))
+    
+    # Apply event pokemon detection if embedding index is available and enabled
+    event_override = False
+    if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
+        # Use the raw logits as embedding vector (before softmax)
+        embed_vec = logits.astype(np.float32)
+        pokemon_name, confidence, event_override = merge_onnx_and_event(
+            pokemon_name, confidence, embed_vec
+        )
+    
+    return {
+        "pokemon": pokemon_name,
+        "confidence": f"{confidence * 100:.2f}%",
+        "confidence_raw": confidence,
+        "top_index": int(top_index),
+        "event_override": event_override
+    }
+
+
+def run_onnx_prediction(image_bytes):
+    """Run ONNX prediction on image bytes (without caching)."""
+    # Preprocess image (single pass by default for speed)
+    input_data = preprocess_image(image_bytes)
+    
+    # Run inference
+    input_name = session.get_inputs()[0].name
+    output_name = session.get_outputs()[0].name
+    outputs = session.run([output_name], {input_name: input_data})
+    
+    # Handle different batch sizes based on TTA setting
+    if ENABLE_TTA:
+        # Aggregate predictions (logits) across TTA batch
+        logits = (outputs[0][0] + outputs[0][1]) * 0.5
+    else:
+        # Single forward pass
+        logits = outputs[0][0]
+    
+    # Apply softmax to get probabilities
+    exp_predictions = np.exp(logits - np.max(logits))
+    probabilities = exp_predictions / np.sum(exp_predictions)
+    
+    # Get top prediction
+    top_index = np.argmax(probabilities)
+    confidence = float(probabilities[top_index])
+    
+    # Get label name
+    if top_index < len(labels):
+        pokemon_name = labels[top_index]
+    else:
+        pokemon_name = "unknown"
+    
+    # Apply confidence adjustment from feedback system
+    if feedback_system:
+        adjustment = feedback_system.get_confidence_adjustment(pokemon_name)
+        confidence = max(0.0, min(1.0, confidence + adjustment))
+    
+    # Apply event pokemon detection if embedding index is available and enabled
+    event_override = False
+    if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
+        # Use the raw logits as embedding vector (before softmax)
+        embed_vec = logits.astype(np.float32)
+        pokemon_name, confidence, event_override = merge_onnx_and_event(
+            pokemon_name, confidence, embed_vec
+        )
+    
+    return {
+        "pokemon": pokemon_name,
+        "confidence": f"{confidence * 100:.2f}%",
+        "confidence_raw": confidence,
+        "top_index": int(top_index),
+        "event_override": event_override
+    }
+
+
 def download_image(url):
     """Download image from URL with connection pooling"""
     try:
@@ -434,6 +563,10 @@ def health():
         "feedback": {
             "enabled": FEEDBACK_ENABLED,
             "total_feedback": feedback_system.get_feedback_stats()["total_feedback"] if feedback_system else 0
+        },
+        "perceptual_cache": {
+            "enabled": PERCEPTUAL_CACHE_ENABLED,
+            "statistics": perceptual_cache.get_statistics() if perceptual_cache else None
         }
     }
     return jsonify(health_data)
@@ -441,7 +574,7 @@ def health():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """Predict Pokemon from image bytes - optimized for high volume"""
+    """Predict Pokemon from image bytes with perceptual caching"""
     if session is None:
         return jsonify({"error": "Model not loaded"}), 503
     
@@ -452,63 +585,36 @@ def predict():
         if not image_bytes:
             return jsonify({"error": "No image data provided"}), 400
         
-        # Check cache first
+        # Try perceptual cache first (if enabled)
+        if perceptual_cache:
+            try:
+                image = Image.open(io.BytesIO(image_bytes))
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
+                
+                # Check if client wants to force model inference
+                force_model = request.headers.get('X-Force-Model', '').lower() in ('true', '1', 'yes')
+                
+                prediction = perceptual_cache.predict(
+                    image, 
+                    onnx_predict_func=lambda img: run_onnx_prediction(image_bytes),
+                    force_model=force_model
+                )
+                
+                if prediction.get('cache_hit') and not force_model:
+                    return jsonify(prediction)
+            except Exception as e:
+                print(f"Perceptual cache error: {e}")
+                # Fall through to regular prediction
+        
+        # Check regular cache (hash-based)
         cache_key = get_cache_key(image_bytes)
         cached_result = get_cached_prediction(cache_key)
         if cached_result:
             return jsonify(cached_result)
         
-        # Preprocess image (single pass by default for speed)
-        input_data = preprocess_image(image_bytes)
-        
-        # Run inference
-        input_name = session.get_inputs()[0].name
-        output_name = session.get_outputs()[0].name
-        outputs = session.run([output_name], {input_name: input_data})
-        
-        # Handle different batch sizes based on TTA setting
-        if ENABLE_TTA:
-            # Aggregate predictions (logits) across TTA batch
-            logits = (outputs[0][0] + outputs[0][1]) * 0.5
-        else:
-            # Single forward pass
-            logits = outputs[0][0]
-        
-        # Apply softmax to get probabilities
-        exp_predictions = np.exp(logits - np.max(logits))
-        probabilities = exp_predictions / np.sum(exp_predictions)
-        
-        # Get top prediction
-        top_index = np.argmax(probabilities)
-        confidence = float(probabilities[top_index])
-        
-        # Get label name
-        if top_index < len(labels):
-            pokemon_name = labels[top_index]
-        else:
-            pokemon_name = "unknown"
-        
-        # Apply confidence adjustment from feedback system
-        if feedback_system:
-            adjustment = feedback_system.get_confidence_adjustment(pokemon_name)
-            confidence = max(0.0, min(1.0, confidence + adjustment))
-        
-        # Apply event pokemon detection if embedding index is available and enabled
-        event_override = False
-        if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
-            # Use the raw logits as embedding vector (before softmax)
-            embed_vec = logits.astype(np.float32)
-            pokemon_name, confidence, event_override = merge_onnx_and_event(
-                pokemon_name, confidence, embed_vec
-            )
-        
-        result = {
-            "pokemon": pokemon_name,
-            "confidence": f"{confidence * 100:.2f}%",
-            "confidence_raw": confidence,
-            "top_index": int(top_index),
-            "event_override": event_override
-        }
+        # Run ONNX prediction
+        result = run_onnx_prediction(image_bytes)
         
         # Cache the result
         set_cached_prediction(cache_key, result)

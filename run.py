@@ -7,7 +7,7 @@ import sys
 # Add src directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from app import app, session, ENABLE_TTA, ENABLE_GPU, MAX_WORKERS, ENABLE_CACHE, CACHE_SIZE, ENABLE_EVENT_EMBEDDING, FEEDBACK_ENABLED
+from app import app, session, ENABLE_TTA, ENABLE_GPU, MAX_WORKERS, ENABLE_CACHE, CACHE_SIZE, ENABLE_EVENT_EMBEDDING, FEEDBACK_ENABLED, PERCEPTUAL_CACHE_ENABLED
 
 if __name__ == "__main__":
     # Verify model loaded
@@ -24,6 +24,7 @@ if __name__ == "__main__":
     print(f"  - Cache Size: {CACHE_SIZE}")
     print(f"  - Event Embedding: {ENABLE_EVENT_EMBEDDING}")
     print(f"  - Feedback System: {FEEDBACK_ENABLED}")
+    print(f"  - Perceptual Cache: {PERCEPTUAL_CACHE_ENABLED}")
     
     # Print available routes
     print("\nAvailable routes:")
