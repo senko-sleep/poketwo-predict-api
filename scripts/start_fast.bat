@@ -21,4 +21,5 @@ echo   - Max Workers: %MAX_WORKERS%
 echo   - Cache Size: %CACHE_SIZE%
 echo   - Feedback System: %FEEDBACK_ENABLED%
 
-python app.py
+cd ..
+python run.py

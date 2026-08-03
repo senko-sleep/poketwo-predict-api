@@ -1,6 +1,12 @@
 """
 Test the Poketwo feedback system with example catch messages
 """
+import os
+import sys
+
+# Add src directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 import requests
 import json
 

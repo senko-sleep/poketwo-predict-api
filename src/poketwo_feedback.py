@@ -3,6 +3,7 @@ Poketwo Feedback System
 Parses Poketwo catch messages and provides reinforcement learning feedback
 to improve prediction accuracy without degrading the model.
 """
+import os
 import re
 import json
 import threading
@@ -13,7 +14,12 @@ from typing import Optional, Dict, List
 class PoketwoFeedback:
     """Handles Poketwo catch message parsing and feedback processing"""
     
-    def __init__(self, feedback_file: str = "poketwo_feedback.json"):
+    def __init__(self, feedback_file: str = None):
+        if feedback_file is None:
+            # Set default path to project root
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            feedback_file = os.path.join(project_root, "poketwo_feedback.json")
+        
         self.feedback_file = feedback_file
         self.feedback_data = self._load_feedback()
         self.lock = threading.Lock()

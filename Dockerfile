@@ -11,20 +11,16 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY app.py .
-COPY pokemon_cnn_v2.onnx .
-COPY labels_v2.json .
-COPY event_embedding_index.npz .
-COPY event_embedding_meta.json .
-COPY event_labels.json .
-COPY event_label_config.json .
+# Copy application code with new structure
+COPY src/ ./src/
+COPY models/ ./models/
+COPY run.py .
 
 # Verify files exist
-RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json event_embedding_index.npz event_embedding_meta.json event_labels.json event_label_config.json
+RUN ls -lh models/pokemon_cnn_v2.onnx models/labels_v2.json models/event_embedding_index.npz models/event_embedding_meta.json models/event_labels.json models/event_label_config.json
 
 # Expose port
 EXPOSE 8080
 
 # Run with gunicorn for production (preload to load model before forking workers)
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--preload", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "60", "--preload", "--access-logfile", "-", "--error-logfile", "-", "run:app"]

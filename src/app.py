@@ -19,12 +19,16 @@ from functools import lru_cache
 import hashlib
 from poketwo_feedback import PoketwoFeedback
 
+# Get the parent directory (project root)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Configuration
-ONNX_MODEL_PATH = os.environ.get("ONNX_MODEL_PATH", "pokemon_cnn_v2.onnx")
-LABELS_PATH = os.environ.get("LABELS_PATH", "labels_v2.json")
-EVENT_EMBEDDING_INDEX_PATH = os.environ.get("EVENT_EMBEDDING_INDEX_PATH", "event_embedding_index.npz")
-EVENT_EMBEDDING_META_PATH = os.environ.get("EVENT_EMBEDDING_META_PATH", "event_embedding_meta.json")
-EVENT_MANIFEST_PATH = os.environ.get("EVENT_MANIFEST_PATH", "event_labels.json")
+ONNX_MODEL_PATH = os.environ.get("ONNX_MODEL_PATH", os.path.join(PROJECT_ROOT, "models", "pokemon_cnn_v2.onnx"))
+LABELS_PATH = os.environ.get("LABELS_PATH", os.path.join(PROJECT_ROOT, "models", "labels_v2.json"))
+EVENT_EMBEDDING_INDEX_PATH = os.environ.get("EVENT_EMBEDDING_INDEX_PATH", os.path.join(PROJECT_ROOT, "models", "event_embedding_index.npz"))
+EVENT_EMBEDDING_META_PATH = os.environ.get("EVENT_EMBEDDING_META_PATH", os.path.join(PROJECT_ROOT, "models", "event_embedding_meta.json"))
+EVENT_MANIFEST_PATH = os.environ.get("EVENT_MANIFEST_PATH", os.path.join(PROJECT_ROOT, "models", "event_labels.json"))
+EVENT_LABEL_CONFIG_PATH = os.environ.get("EVENT_LABEL_CONFIG_PATH", os.path.join(PROJECT_ROOT, "models", "event_label_config.json"))
 INPUT_SIZE = 224
 
 # Performance settings
@@ -169,8 +173,6 @@ class EmbeddingIndex:
         # Sort by average score
         results.sort(key=lambda x: x[1], reverse=True)
         return results
-
-EVENT_LABEL_CONFIG_PATH = os.environ.get("EVENT_LABEL_CONFIG_PATH", "event_label_config.json")
 
 # Load event label config
 event_label_config = {}
@@ -729,29 +731,3 @@ def feedback_stats():
     
     stats = feedback_system.get_feedback_stats()
     return jsonify(stats)
-
-
-if __name__ == "__main__":
-    # Verify model loaded
-    if session is None:
-        print("ERROR: Model failed to load. Server cannot start.")
-        sys.exit(1)
-    
-    print("Model loaded successfully, starting server...")
-    print(f"Performance configuration:")
-    print(f"  - TTA (Test-Time Augmentation): {ENABLE_TTA}")
-    print(f"  - GPU Acceleration: {ENABLE_GPU}")
-    print(f"  - Max Workers: {MAX_WORKERS}")
-    print(f"  - Caching: {ENABLE_CACHE}")
-    print(f"  - Cache Size: {CACHE_SIZE}")
-    print(f"  - Event Embedding: {ENABLE_EVENT_EMBEDDING}")
-    print(f"  - Feedback System: {FEEDBACK_ENABLED}")
-    
-    # Print available routes
-    print("\nAvailable routes:")
-    for rule in app.url_map.iter_rules():
-        print(f"  {rule.methods} {rule.rule}")
-    
-    # Run server with threaded mode for concurrent requests
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port, debug=False, threaded=True)
