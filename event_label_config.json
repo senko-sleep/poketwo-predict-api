@@ -16,7 +16,9 @@
   },
   "dj_rotom": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.88
+    "min_sim": 0.88,
+    "min_margin": 0.001,
+    "_note": "Event variant of Rotom \u2014 set min_margin=0.001 so event index overrides ONNX when best_sim >= 0.88."
   },
   "prof_tangrowth": {
     "onnx_ceiling": 0.95,
