@@ -197,7 +197,20 @@ CORS(app)
 def preprocess_image(image_bytes):
     """Preprocess image for ONNX model with Test-Time Augmentation (Forward + Flip)"""
     # Load image
-    image = Image.open(io.BytesIO(image_bytes))
+    try:
+        # Handle both bytes and BytesIO objects
+        if isinstance(image_bytes, bytes):
+            bio = io.BytesIO(image_bytes)
+        elif hasattr(image_bytes, 'read'):
+            bio = image_bytes
+            bio.seek(0)
+        else:
+            raise ValueError(f"Unsupported type for image_bytes: {type(image_bytes)}")
+        
+        image = Image.open(bio)
+    except Exception as e:
+        print(f"Failed to open image: {e}")
+        raise
     
     # Convert to RGB if necessary
     if image.mode != "RGB":
@@ -310,9 +323,16 @@ def merge_onnx_and_event(
 def download_image(url):
     """Download image from URL"""
     try:
-        response = requests.get(url, timeout=10)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
-            return response.content
+            content = response.content
+            print(f"Downloaded image: {len(content)} bytes, content-type: {response.headers.get('Content-Type')}")
+            print(f"Type of downloaded content: {type(content)}")
+            return content
+        print(f"Failed to download image: HTTP {response.status_code}")
         return None
     except Exception as e:
         print(f"Error downloading image: {e}")
@@ -399,13 +419,68 @@ def predict_url():
         return jsonify({"error": "URL not provided"}), 400
     
     url = data["url"]
+    print(f"Processing URL: {url}")
     image_bytes = download_image(url)
     
     if not image_bytes:
         return jsonify({"error": "Failed to download image"}), 400
     
-    # Use the same prediction logic
-    return predict()
+    print(f"Image bytes length: {len(image_bytes)}")
+    print(f"Image bytes type: {type(image_bytes)}")
+    
+    if session is None:
+        return jsonify({"error": "Model not loaded"}), 503
+    
+    try:
+        # Preprocess image with TTA (batch of 2: forward + flip)
+        input_data = preprocess_image(image_bytes)
+        
+        # Run inference
+        input_name = session.get_inputs()[0].name
+        output_name = session.get_outputs()[0].name
+        outputs = session.run([output_name], {input_name: input_data})
+        
+        # Aggregate predictions (logits) across TTA batch
+        logits = (outputs[0][0] + outputs[0][1]) * 0.5
+        
+        # Apply softmax to get probabilities
+        exp_predictions = np.exp(logits - np.max(logits))
+        probabilities = exp_predictions / np.sum(exp_predictions)
+        
+        # Get top prediction
+        top_index = np.argmax(probabilities)
+        confidence = float(probabilities[top_index])
+        
+        # Get label name
+        if top_index < len(labels):
+            pokemon_name = labels[top_index]
+        else:
+            pokemon_name = "unknown"
+        
+        # Apply event pokemon detection if embedding index is available
+        event_override = False
+        if event_embedding_index is not None and event_embedding_index.size > 0:
+            # Use the raw logits as embedding vector (before softmax)
+            embed_vec = logits.astype(np.float32)
+            pokemon_name, confidence, event_override = merge_onnx_and_event(
+                pokemon_name, confidence, embed_vec
+            )
+        
+        return jsonify({
+            "pokemon": pokemon_name,
+            "confidence": f"{confidence * 100:.2f}%",
+            "confidence_raw": confidence,
+            "top_index": int(top_index),
+            "event_override": event_override
+        })
+    
+    except Exception as e:
+        import traceback
+        error_details = str(e)
+        traceback_str = traceback.format_exc()
+        print(f"Prediction error: {error_details}")
+        print(f"Traceback: {traceback_str}")
+        return jsonify({"error": error_details, "traceback": traceback_str}), 500
 
 
 @app.route("/api/predict", methods=["GET", "POST"])
@@ -449,26 +524,6 @@ def predict_api():
             pokemon_name = labels[top_index]
         else:
             pokemon_name = "unknown"
-
-        # Apply event pokemon detection if embedding index is available
-        event_override = False
-        if event_embedding_index is not None and event_embedding_index.size > 0:
-            # Use the raw logits as embedding vector (before softmax)
-            embed_vec = logits.astype(np.float32)
-            pokemon_name, confidence, event_override = merge_onnx_and_event(
-                pokemon_name, confidence, embed_vec
-            )
-
-        return jsonify({
-            "pokemon": pokemon_name,
-            "confidence": f"{confidence * 100:.2f}%",
-            "confidence_raw": confidence,
-            "top_index": int(top_index),
-            "event_override": event_override
-        })
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
         # Apply event pokemon detection if embedding index is available
         event_override = False
