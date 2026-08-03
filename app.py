@@ -138,6 +138,20 @@ class EmbeddingIndex:
         results.sort(key=lambda x: x[1], reverse=True)
         return results
 
+EVENT_LABEL_CONFIG_PATH = os.environ.get("EVENT_LABEL_CONFIG_PATH", "event_label_config.json")
+
+# Load event label config
+event_label_config = {}
+if os.path.exists(EVENT_LABEL_CONFIG_PATH):
+    try:
+        with open(EVENT_LABEL_CONFIG_PATH, "r") as f:
+            raw_cfg = json.load(f)
+            meta_keys = {"_comment", "_fields", "_strategy"}
+            event_label_config = {k: v for k, v in raw_cfg.items() if k not in meta_keys and not k.startswith("_")}
+        print(f"Loaded event label config: {len(event_label_config)} label overrides")
+    except Exception as e:
+        print(f"Failed to load event label config: {e}")
+
 # Load event embedding index
 event_embedding_index = None
 event_labels = set()
@@ -181,7 +195,7 @@ CORS(app)
 
 
 def preprocess_image(image_bytes):
-    """Preprocess image for ONNX model"""
+    """Preprocess image for ONNX model with Test-Time Augmentation (Forward + Flip)"""
     # Load image
     image = Image.open(io.BytesIO(image_bytes))
     
@@ -192,19 +206,21 @@ def preprocess_image(image_bytes):
     # Resize to input size
     image = image.resize((INPUT_SIZE, INPUT_SIZE), Image.LANCZOS)
     
-    # Convert to numpy array and normalize
-    img_array = np.array(image, dtype=np.float32) / 255.0
-    
-    # Apply ImageNet normalization
+    # Normalize setup
     mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
     std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-    img_array = (img_array - mean) / std
     
-    # Transpose to NCHW format (batch, channels, height, width)
-    img_array = np.transpose(img_array, (2, 0, 1))
-    img_array = np.expand_dims(img_array, axis=0)
+    # Forward view
+    fwd_array = np.array(image, dtype=np.float32) / 255.0
+    fwd = np.transpose((fwd_array - mean) / std, (2, 0, 1))
     
-    return img_array.astype(np.float32)
+    # Flipped view
+    flip_img = image.transpose(Image.FLIP_LEFT_RIGHT)
+    flip_array = np.array(flip_img, dtype=np.float32) / 255.0
+    flip = np.transpose((flip_array - mean) / std, (2, 0, 1))
+    
+    # Batch (2, 3, 224, 224)
+    return np.stack([fwd, flip], axis=0).astype(np.float32)
 
 def is_event_label(label: str) -> bool:
     """Check if a label is an event pokemon."""
@@ -246,35 +262,48 @@ def merge_onnx_and_event(
     
     print(f"DEBUG: best_label={best_label}, best_sim={best_sim}, margin={margin}")
     
-    # Event detection thresholds - extremely strict to prevent artificial predictions
-    # Only override when there's clear, unambiguous evidence
-    min_sim = 0.98  # Require extremely high similarity for event override
-    min_margin = 0.20  # Require very clear margin over second best (embeddings are clustered)
-    onnx_ceiling = 0.40  # ONNX confidence above this blocks event override (only override when ONNX is very uncertain)
+    cfg = event_label_config.get(best_label, {})
+    min_sim = cfg.get("min_sim", 0.93)
+    min_margin = cfg.get("min_margin", 0.005)
+    onnx_ceiling = cfg.get("onnx_ceiling", 1.0)
     
     onnx_is_event = is_event_label(onnx_name)
-    print(f"DEBUG: onnx_is_event={onnx_is_event}")
+    print(f"DEBUG: onnx_is_event={onnx_is_event}, cfg={cfg}")
     
     # If ONNX already predicts an event label, check if event index agrees
     if onnx_is_event:
         if best_sim >= min_sim and margin >= min_margin:
             if best_sim > onnx_conf:
                 print(f"Event refinement: {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
+                if best_sim >= 0.99:
+                    boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
+                    return best_label, boosted_conf, True
                 return best_label, onnx_conf, True
         return onnx_name, onnx_conf, False
     
-    # ONNX predicts non-event, event index has match
-    # Only override if:
-    # 1. Event embedding has EXTREMELY high confidence (clear signal it's an event)
-    # 2. ONNX is NOT extremely confident (prevents overriding correct predictions)
-    if best_sim >= 0.98 and margin >= 0.05 and onnx_conf < 0.97:
-        print(f"Event override (high confidence, low ONNX conf): {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
+    # ONNX predicts non-event
+    is_base_variant = onnx_name.lower() in best_label.lower()
+
+    if best_sim >= min_sim and margin >= min_margin:
+        if onnx_conf >= onnx_ceiling and not is_base_variant:
+            print(f"Event override blocked: ONNX too confident ({onnx_conf:.3f} >= {onnx_ceiling})")
+            return onnx_name, onnx_conf, False
+        print(f"Event override: {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
+        if best_sim >= 0.99:
+            boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
+            return best_label, boosted_conf, True
         return best_label, onnx_conf, True
     
-    if onnx_conf >= 0.97:
-        print(f"Event override blocked: ONNX too confident ({onnx_conf:.3f} >= 0.97)")
-    else:
-        print(f"Event override blocked: insufficient evidence (sim={best_sim:.4f}, margin={margin:.4f})")
+    if best_sim >= 0.99 and margin >= min_margin:
+        if onnx_conf >= onnx_ceiling:
+            print(f"Event override (degenerate cluster) blocked: {onnx_name}@{onnx_conf:.3f} >= {onnx_ceiling}")
+            return onnx_name, onnx_conf, False
+        print(f"Event override (degenerate cluster): {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")
+        if best_sim >= 0.99:
+            boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
+            return best_label, boosted_conf, True
+        return best_label, onnx_conf, True
+
     return onnx_name, onnx_conf, False
 
 
@@ -316,7 +345,7 @@ def predict():
         if not image_bytes:
             return jsonify({"error": "No image data provided"}), 400
         
-        # Preprocess image
+        # Preprocess image with TTA (batch of 2: forward + flip)
         input_data = preprocess_image(image_bytes)
         
         # Run inference
@@ -324,8 +353,8 @@ def predict():
         output_name = session.get_outputs()[0].name
         outputs = session.run([output_name], {input_name: input_data})
         
-        # Get predictions (logits)
-        logits = outputs[0][0]
+        # Aggregate predictions (logits) across TTA batch
+        logits = (outputs[0][0] + outputs[0][1]) * 0.5
         
         # Apply softmax to get probabilities
         exp_predictions = np.exp(logits - np.max(logits))
@@ -410,7 +439,7 @@ def predict_api():
         output_name = session.get_outputs()[0].name
         outputs = session.run([output_name], {input_name: input_data})
 
-        logits = outputs[0][0]
+        logits = (outputs[0][0] + outputs[0][1]) * 0.5
         exp_predictions = np.exp(logits - np.max(logits))
         probabilities = exp_predictions / np.sum(exp_predictions)
         top_index = np.argmax(probabilities)
@@ -420,6 +449,26 @@ def predict_api():
             pokemon_name = labels[top_index]
         else:
             pokemon_name = "unknown"
+
+        # Apply event pokemon detection if embedding index is available
+        event_override = False
+        if event_embedding_index is not None and event_embedding_index.size > 0:
+            # Use the raw logits as embedding vector (before softmax)
+            embed_vec = logits.astype(np.float32)
+            pokemon_name, confidence, event_override = merge_onnx_and_event(
+                pokemon_name, confidence, embed_vec
+            )
+
+        return jsonify({
+            "pokemon": pokemon_name,
+            "confidence": f"{confidence * 100:.2f}%",
+            "confidence_raw": confidence,
+            "top_index": int(top_index),
+            "event_override": event_override
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
         # Apply event pokemon detection if embedding index is available
         event_override = False
