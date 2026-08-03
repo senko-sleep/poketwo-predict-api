@@ -295,7 +295,7 @@ def merge_onnx_and_event(
         return best_label, onnx_conf, True
     
     if best_sim >= 0.99 and margin >= min_margin:
-        if onnx_conf >= onnx_ceiling:
+        if onnx_conf >= onnx_ceiling and not is_base_variant:
             print(f"Event override (degenerate cluster) blocked: {onnx_name}@{onnx_conf:.3f} >= {onnx_ceiling}")
             return onnx_name, onnx_conf, False
         print(f"Event override (degenerate cluster): {onnx_name}@{onnx_conf:.3f} -> {best_label}@{best_sim:.4f}")

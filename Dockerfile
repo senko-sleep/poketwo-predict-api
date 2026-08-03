@@ -18,9 +18,10 @@ COPY labels_v2.json .
 COPY event_embedding_index.npz .
 COPY event_embedding_meta.json .
 COPY event_labels.json .
+COPY event_label_config.json .
 
 # Verify files exist
-RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json event_embedding_index.npz event_embedding_meta.json event_labels.json
+RUN ls -lh pokemon_cnn_v2.onnx labels_v2.json event_embedding_index.npz event_embedding_meta.json event_labels.json event_label_config.json
 
 # Expose port
 EXPOSE 8080
