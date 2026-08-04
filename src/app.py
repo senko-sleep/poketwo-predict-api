@@ -431,61 +431,6 @@ def run_onnx_prediction(image_bytes):
     }
 
 
-def run_onnx_prediction(image_bytes):
-    """Run ONNX prediction on image bytes (without caching)."""
-    # Preprocess image (single pass by default for speed)
-    input_data = preprocess_image(image_bytes)
-    
-    # Run inference
-    input_name = session.get_inputs()[0].name
-    output_name = session.get_outputs()[0].name
-    outputs = session.run([output_name], {input_name: input_data})
-    
-    # Handle different batch sizes based on TTA setting
-    if ENABLE_TTA:
-        # Aggregate predictions (logits) across TTA batch
-        logits = (outputs[0][0] + outputs[0][1]) * 0.5
-    else:
-        # Single forward pass
-        logits = outputs[0][0]
-    
-    # Apply softmax to get probabilities
-    exp_predictions = np.exp(logits - np.max(logits))
-    probabilities = exp_predictions / np.sum(exp_predictions)
-    
-    # Get top prediction
-    top_index = np.argmax(probabilities)
-    confidence = float(probabilities[top_index])
-    
-    # Get label name
-    if top_index < len(labels):
-        pokemon_name = labels[top_index]
-    else:
-        pokemon_name = "unknown"
-    
-    # Apply confidence adjustment from feedback system
-    if feedback_system:
-        adjustment = feedback_system.get_confidence_adjustment(pokemon_name)
-        confidence = max(0.0, min(1.0, confidence + adjustment))
-    
-    # Apply event pokemon detection if embedding index is available and enabled
-    event_override = False
-    if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
-        # Use the raw logits as embedding vector (before softmax)
-        embed_vec = logits.astype(np.float32)
-        pokemon_name, confidence, event_override = merge_onnx_and_event(
-            pokemon_name, confidence, embed_vec
-        )
-    
-    return {
-        "pokemon": pokemon_name,
-        "confidence": f"{confidence * 100:.2f}%",
-        "confidence_raw": confidence,
-        "top_index": int(top_index),
-        "event_override": event_override
-    }
-
-
 def download_image(url):
     """Download image from URL with connection pooling"""
     try:
