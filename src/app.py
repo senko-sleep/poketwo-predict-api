@@ -34,8 +34,13 @@ INPUT_SIZE = 224
 
 # Performance settings
 ENABLE_TTA = os.environ.get("ENABLE_TTA", "false").lower() in ("true", "1", "yes")
-ENABLE_GPU = os.environ.get("ENABLE_GPU", "true").lower() in ("true", "1", "yes")
-MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "4"))
+# GPU is OFF by default: Render free tier has no GPU, and probing for CUDA wastes
+# startup time + memory. Set ENABLE_GPU=true only on a real GPU host.
+ENABLE_GPU = os.environ.get("ENABLE_GPU", "false").lower() in ("true", "1", "yes")
+# MAX_WORKERS default lowered to 2: over-provisioned workers on a small host saturate
+# all CPU on ONNX inference and get OOM/502-killed under an incense burst. 1-2 workers
+# keeps the process alive and responsive. Use ENABLE_CACHE to absorb repeated spawns.
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "2"))
 ENABLE_CACHE = os.environ.get("ENABLE_CACHE", "true").lower() in ("true", "1", "yes")
 CACHE_SIZE = int(os.environ.get("CACHE_SIZE", "1000"))
 ENABLE_EVENT_EMBEDDING = os.environ.get("ENABLE_EVENT_EMBEDDING", "true").lower() in ("true", "1", "yes")
