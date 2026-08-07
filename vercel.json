@@ -8,8 +8,31 @@
   ],
   "routes": [
     {
+      "src": "/health",
+      "dest": "api.py",
+      "headers": {
+        "Cache-Control": "public, max-age=60, s-maxage=120"
+      }
+    },
+    {
+      "src": "/predict",
+      "dest": "api.py",
+      "headers": {
+        "Cache-Control": "no-store, no-cache, must-revalidate"
+      }
+    },
+    {
+      "src": "/predict/url",
+      "dest": "api.py",
+      "headers": {
+        "Cache-Control": "no-store, no-cache, must-revalidate"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "api.py"
     }
-  ]
+  ],
+
+  "crons": []
 }
