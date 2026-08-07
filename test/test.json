@@ -1,0 +1,28 @@
+{
+  "test_images": [
+    {
+      "url": "https://images-ext-1.discordapp.net/external/9c9M10rPZaxqGDC-D17qnBDv8n49Z4Hfp8RbN0MS3BQ/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1074905720073506876/6e92a896fc8009a836763720c223da70.png?format=webp&quality=lossless",
+      "name": "sammy"
+    },
+    {
+      "url": "https://media.discordapp.net/attachments/1534754659405795349/1535102667356119155/pokemon.jpg?ex=6a768b44&is=6a7539c4&hm=b6677bb1592f940bc7b08b8924b929a66abaa3c68659e3ae0750e14a86931855&=&format=webp",
+      "name": "non_binary_flag_vivillon"
+    },
+    {
+      "url": "https://media.discordapp.net/attachments/1481046862206079190/1535114521813852200/pokemon.jpg?ex=6a76964f&is=6a7544cf&hm=589bdb4fe045b1ec1d673e852a4f0a2070f3ff784cdb273ae8336b0371cd14bd&=&format=webp",
+      "name": "proud_taipeier_ursaring"
+    },
+    {
+      "url": "https://media.discordapp.net/attachments/1481046585172299866/1535077492748984382/pokemon.jpg?ex=6a7673d2&is=6a752252&hm=efcd1c7d72cb31302d036d8e23ab2081d469e1ae531a66393b10b83177fce3f5&=&format=webp",
+      "name": "proud_paulistano_luxray"
+    },
+    {
+      "url": "https://media.discordapp.net/attachments/1409247854073221290/1535094132794589315/pokemon.jpg?ex=6a768351&is=6a7531d1&hm=0d9072f5ee96286435f6055aca1ff1647ea31c4075e546396db459a120928ea5&=&format=webp",
+      "name": "proud_amsterdammer_pyroar"
+    },
+    {
+      "url": "https://media.discordapp.net/attachments/1481046738369384498/1535056600425963550/pokemon.jpg?ex=6a76605d&is=6a750edd&hm=80e08813d9d020939ed65502617e80a42087c68c4a087a89dfc9cdabada8bd02&=&format=webp",
+      "name": "proud_sydneysider_komala"
+    }
+  ]
+}

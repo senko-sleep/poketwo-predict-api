@@ -1,0 +1,17 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.17:8080
+Press CTRL+C to quit
+127.0.0.1 - - [07/Aug/2026 00:46:20] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 00:46:25] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 00:46:29] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 00:46:33] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 00:46:37] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 00:46:41] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:31] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:34] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:37] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:40] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:43] "POST /predict/url HTTP/1.1" 200 -
+127.0.0.1 - - [07/Aug/2026 01:28:46] "POST /predict/url HTTP/1.1" 200 -

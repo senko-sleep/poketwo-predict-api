@@ -143,11 +143,10 @@
   "proud_new_yorker_braviary": {
     "added_at": "2026-07-25T14:42:54.855797",
     "originals": [
-      "proud_new_yorker_braviary_1.png",
       "proud_new_yorker_braviary_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:43:57.498348"
+    "augmented_count": 108,
+    "last_updated": "2026-07-25T14:42:54.855823"
   },
   "proud_paulistano_luxray": {
     "added_at": "2026-07-25T14:46:11.343129",
@@ -233,163 +232,145 @@
   "gender_creative_flag_vivillon": {
     "added_at": "2026-07-31T08:34:13.805674",
     "originals": [
-      "gender_creative_flag_vivillon_1.png",
-      "gender_creative_flag_vivillon_2.png"
+      "gender_creative_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:00.237524"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:13.805705"
   },
   "genderfluid_flag_vivillon": {
     "added_at": "2026-07-31T08:34:36.670402",
     "originals": [
-      "genderfluid_flag_vivillon_1.png",
-      "genderfluid_flag_vivillon_2.png"
+      "genderfluid_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:01.434561"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:36.670473"
   },
   "genderqueer_flag_vivillon": {
     "added_at": "2026-07-31T08:34:58.375477",
     "originals": [
-      "genderqueer_flag_vivillon_1.png",
-      "genderqueer_flag_vivillon_2.png"
+      "genderqueer_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:02.655022"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:34:58.375496"
   },
   "gynosexual_flag_vivillon": {
     "added_at": "2026-07-31T08:35:19.965792",
     "originals": [
-      "gynosexual_flag_vivillon_1.png",
-      "gynosexual_flag_vivillon_2.png"
+      "gynosexual_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:03.749526"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:35:19.965814"
   },
   "lesbian_flag_vivillon": {
     "added_at": "2026-07-31T08:35:41.099853",
     "originals": [
-      "lesbian_flag_vivillon_1.png",
-      "lesbian_flag_vivillon_2.png"
+      "lesbian_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:04.823871"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:35:41.099884"
   },
   "maverique_flag_vivillon": {
     "added_at": "2026-07-31T08:36:02.860986",
     "originals": [
-      "maverique_flag_vivillon_1.png",
-      "maverique_flag_vivillon_2.png"
+      "maverique_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:05.872908"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:02.861020"
   },
   "neutrois_flag_vivillon": {
     "added_at": "2026-07-31T08:36:24.326006",
     "originals": [
-      "neutrois_flag_vivillon_1.png",
-      "neutrois_flag_vivillon_2.png"
+      "neutrois_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:06.931785"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:24.326025"
   },
   "non_binary_flag_vivillon": {
     "added_at": "2026-07-31T08:36:45.226322",
     "originals": [
-      "non_binary_flag_vivillon_1.png",
-      "non_binary_flag_vivillon_2.png"
+      "non_binary_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:08.087775"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:36:45.226340"
   },
   "pansexual_flag_vivillon": {
     "added_at": "2026-07-31T08:37:06.093040",
     "originals": [
-      "pansexual_flag_vivillon_1.png",
-      "pansexual_flag_vivillon_2.png"
+      "pansexual_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:09.266099"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:06.093060"
   },
   "polysexual_flag_vivillon": {
     "added_at": "2026-07-31T08:37:27.322175",
     "originals": [
-      "polysexual_flag_vivillon_1.png",
-      "polysexual_flag_vivillon_2.png"
+      "polysexual_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:10.357019"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:27.322194"
   },
   "pride_flag_vivillon": {
     "added_at": "2026-07-31T08:37:47.693469",
     "originals": [
-      "pride_flag_vivillon_1.png",
-      "pride_flag_vivillon_2.png"
+      "pride_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:11.398371"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:37:47.693491"
   },
   "queer_flag_vivillon": {
     "added_at": "2026-07-31T08:38:08.148466",
     "originals": [
-      "queer_flag_vivillon_1.png",
-      "queer_flag_vivillon_2.png"
+      "queer_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:12.551193"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:08.148485"
   },
   "transgender_flag_vivillon": {
     "added_at": "2026-07-31T08:38:29.443400",
     "originals": [
-      "transgender_flag_vivillon_1.png",
-      "transgender_flag_vivillon_2.png"
+      "transgender_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:13.616093"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:29.443420"
   },
   "alloace_flag_vivillon": {
     "added_at": "2026-07-31T08:38:50.005499",
     "originals": [
-      "alloace_flag_vivillon_1.png",
-      "alloace_flag_vivillon_2.png"
+      "alloace_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:14.835853"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:38:50.005535"
   },
   "androgyne_flag_vivillon": {
     "added_at": "2026-07-31T08:39:10.501446",
     "originals": [
-      "androgyne_flag_vivillon_1.png",
-      "androgyne_flag_vivillon_2.png"
+      "androgyne_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:15.933588"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:10.501474"
   },
   "androsexual_flag_vivillon": {
     "added_at": "2026-07-31T08:39:31.414852",
     "originals": [
-      "androsexual_flag_vivillon_1.png",
-      "androsexual_flag_vivillon_2.png"
+      "androsexual_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:17.025257"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:31.414885"
   },
   "aroace_flag_vivillon": {
     "added_at": "2026-07-31T08:39:52.288450",
     "originals": [
-      "aroace_flag_vivillon_1.png",
-      "aroace_flag_vivillon_2.png"
+      "aroace_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:18.123046"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:39:52.288469"
   },
   "aromantic_flag_vivillon": {
     "added_at": "2026-07-31T08:40:12.883831",
     "originals": [
-      "aromantic_flag_vivillon_1.png",
-      "aromantic_flag_vivillon_2.png"
+      "aromantic_flag_vivillon_1.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-08-07T01:44:19.287255"
+    "augmented_count": 108,
+    "last_updated": "2026-07-31T08:40:12.883873"
   }
 }
