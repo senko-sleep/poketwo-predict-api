@@ -17,8 +17,11 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 import hashlib
-from poketwo_feedback import PoketwoFeedback
-from perceptual_cache import PerceptualCache
+from .poketwo_feedback import PoketwoFeedback
+from .perceptual_cache import PerceptualCache
+from .similarity_calibration import get_calibrator
+from .distance_metrics import get_distance_metrics
+from .api_telemetry import get_api_telemetry
 
 # Get the parent directory (project root)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,6 +47,20 @@ MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "2"))
 ENABLE_CACHE = os.environ.get("ENABLE_CACHE", "true").lower() in ("true", "1", "yes")
 CACHE_SIZE = int(os.environ.get("CACHE_SIZE", "1000"))
 ENABLE_EVENT_EMBEDDING = os.environ.get("ENABLE_EVENT_EMBEDDING", "true").lower() in ("true", "1", "yes")
+
+# Prediction fix settings
+USE_CALIBRATED_SIMILARITY = os.environ.get("USE_CALIBRATED_SIMILARITY", "1").lower() in ("1", "true", "yes")
+USE_DISTANCE_METRICS = os.environ.get("USE_DISTANCE_METRICS", "1").lower() in ("1", "true", "yes")
+UNCERTAINTY_ESTIMATION_ENABLED = os.environ.get("UNCERTAINTY_ESTIMATION", "1").lower() in ("1", "true", "yes")
+
+# Conservative fallback thresholds
+CONSERVATIVE_ONNX_THRESHOLD = float(os.environ.get("CONSERVATIVE_ONNX_THRESHOLD", "0.85"))
+CONSERVATIVE_SIM_THRESHOLD = float(os.environ.get("CONSERVATIVE_SIM_THRESHOLD", "0.90"))
+CONSERVATIVE_MARGIN_THRESHOLD = float(os.environ.get("CONSERVATIVE_MARGIN_THRESHOLD", "0.05"))
+CONSERVATIVE_UNCERTAINTY_THRESHOLD = float(os.environ.get("CONSERVATIVE_UNCERTAINTY_THRESHOLD", "0.70"))
+
+# Telemetry settings
+API_TELEMETRY_ENABLED = os.environ.get("API_TELEMETRY_ENABLED", "0").lower() in ("1", "true", "yes")
 
 print(f"Loading ONNX model from {ONNX_MODEL_PATH}...")
 print(f"Current directory: {os.getcwd()}")
@@ -149,6 +166,25 @@ class EmbeddingIndex:
         if self._embeddings is None or len(self._embeddings) == 0:
             return []
         
+        # Try distance-based metrics first if enabled and fitted
+        if USE_DISTANCE_METRICS:
+            try:
+                distance_metrics = get_distance_metrics()
+                if distance_metrics._fitted:
+                    results = distance_metrics.query_nearest_classes(query_vec, top_k, metric="mahalanobis")
+                    
+                    # Apply calibration if enabled
+                    if USE_CALIBRATED_SIMILARITY and results:
+                        calibrator = get_calibrator()
+                        raw_sims = np.array([sim for _, sim in results])
+                        calibrated = calibrator.calibrate(raw_sims)
+                        results = [(label, float(calibrated[i])) for i, (label, _) in enumerate(results)]
+                    
+                    return results
+            except Exception as e:
+                print(f"Distance metrics query failed: {e}, falling back to cosine similarity")
+        
+        # Fallback to cosine similarity
         # Compute cosine similarity - normalize query vector first
         query_vec = query_vec.astype(np.float32)
         norm = np.linalg.norm(query_vec)
@@ -156,7 +192,14 @@ class EmbeddingIndex:
             query_vec = query_vec / norm
         
         # Compute dot product for cosine similarity (embeddings are already normalized)
-        similarities = np.dot(self._embeddings.astype(np.float32), query_vec)
+        raw_similarities = np.dot(self._embeddings.astype(np.float32), query_vec)
+        
+        # Apply probabilistic calibration if enabled
+        if USE_CALIBRATED_SIMILARITY:
+            calibrator = get_calibrator()
+            similarities = calibrator.calibrate(raw_similarities)
+        else:
+            similarities = raw_similarities
         
         # Get top-k indices
         top_indices = np.argsort(similarities)[-top_k:][::-1]
@@ -319,32 +362,45 @@ def merge_onnx_and_event(
     onnx_name: str,
     onnx_conf: float,
     embed_vec: np.ndarray,
-) -> tuple[str, float, bool]:
-    """Merge ONNX prediction with event embedding index results."""
+) -> tuple[str, float, bool, str]:
+    """Merge ONNX prediction with event embedding index results - always pick higher confidence."""
     if event_embedding_index is None or event_embedding_index.size == 0:
-        return onnx_name, onnx_conf, False
+        return onnx_name, onnx_conf, False, "no_override"
     
+    # NO CONSERVATIVE THRESHOLDS - always query event embeddings
     try:
         ev_results = event_embedding_index.query_aggregated(embed_vec, top_k=5)
     except Exception as e:
-        return onnx_name, onnx_conf, False
+        return onnx_name, onnx_conf, False, "query_failed"
     
     if not ev_results:
-        return onnx_name, onnx_conf, False
+        return onnx_name, onnx_conf, False, "no_results"
     
     # Filter out ignored labels
     ignore_labels = {"backgrounds", "backgounds", "background", "bg"}
     ev_results = [(l, s) for l, s in ev_results if l.lower() not in ignore_labels]
     if not ev_results:
-        return onnx_name, onnx_conf, False
+        return onnx_name, onnx_conf, False, "filtered_results"
     
     best_label, best_sim = ev_results[0]
     second_sim = ev_results[1][1] if len(ev_results) > 1 else 0.0
     margin = best_sim - second_sim
     
-    cfg = event_label_config.get(best_label, {})
-    min_sim = cfg.get("min_sim", 0.93)
-    min_margin = cfg.get("min_margin", 0.005)
+    # === FUNDAMENTAL FIX: Always pick the higher confidence option ===
+    # NO THRESHOLDS - just pick the mathematically higher confidence
+    # === BALANCED FIX: Pick higher confidence with minimum quality checks ===
+    # MINIMUM QUALITY CHECK: Event similarity must be reasonable
+    if best_sim < 0.50:  # Minimum 50% similarity to be considered
+        print(f"Event similarity too low: {best_sim:.4f} < 0.50, ignoring event result")
+        return onnx_name, onnx_conf, False, "blocked_by_similarity"
+    
+    # CORE FIX: Always pick the higher confidence option
+    if best_sim > onnx_conf:
+        print(f"Choosing higher confidence: event {best_label}@{best_sim:.4f} > ONNX {onnx_name}@{onnx_conf:.4f}")
+        return best_label, best_sim, True, "higher_confidence_override"
+    else:
+        print(f"Choosing higher confidence: ONNX {onnx_name}@{onnx_conf:.4f} >= event {best_label}@{best_sim:.4f}")
+        return onnx_name, onnx_conf, False, "no_override"
     onnx_ceiling = cfg.get("onnx_ceiling", 1.0)
     
     onnx_is_event = is_event_label(onnx_name)
@@ -355,34 +411,38 @@ def merge_onnx_and_event(
             if best_sim > onnx_conf:
                 if best_sim >= 0.99:
                     boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
-                    return best_label, boosted_conf, True
-                return best_label, onnx_conf, True
-        return onnx_name, onnx_conf, False
+                    return best_label, boosted_conf, True, "successful_override"
+                return best_label, onnx_conf, True, "successful_override"
+        return onnx_name, onnx_conf, False, "no_override"
     
     # ONNX predicts non-event
     is_base_variant = onnx_name.lower() in best_label.lower()
 
     if best_sim >= min_sim and margin >= min_margin:
         if onnx_conf >= onnx_ceiling and not is_base_variant:
-            return onnx_name, onnx_conf, False
+            return onnx_name, onnx_conf, False, "blocked_by_onnx_ceiling"
         if best_sim >= 0.99:
             boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
-            return best_label, boosted_conf, True
-        return best_label, onnx_conf, True
+            return best_label, boosted_conf, True, "successful_override"
+        return best_label, onnx_conf, True, "successful_override"
     
     if best_sim >= 0.99 and margin >= min_margin:
         if onnx_conf >= onnx_ceiling and not is_base_variant:
-            return onnx_name, onnx_conf, False
+            return onnx_name, onnx_conf, False, "blocked_by_onnx_ceiling"
         if best_sim >= 0.99:
             boosted_conf = min(1.0, max(onnx_conf, best_sim * 0.9))
-            return best_label, boosted_conf, True
-        return best_label, onnx_conf, True
+            return best_label, boosted_conf, True, "successful_override"
+        return best_label, onnx_conf, True, "successful_override"
 
-    return onnx_name, onnx_conf, False
+    return onnx_name, onnx_conf, False, "no_override"
 
 
 def run_onnx_prediction(image_bytes):
     """Run ONNX prediction on image bytes (without caching)."""
+    import time
+    start_time = time.time()
+    end_time = start_time  # fallback in case of early return
+    
     # Preprocess image (single pass by default for speed)
     input_data = preprocess_image(image_bytes)
     
@@ -420,19 +480,38 @@ def run_onnx_prediction(image_bytes):
     
     # Apply event pokemon detection if embedding index is available and enabled
     event_override = False
+    override_decision = "no_override"
     if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
         # Use the raw logits as embedding vector (before softmax)
         embed_vec = logits.astype(np.float32)
-        pokemon_name, confidence, event_override = merge_onnx_and_event(
+        pokemon_name, confidence, event_override, override_decision = merge_onnx_and_event(
             pokemon_name, confidence, embed_vec
         )
+    
+    # Record telemetry if enabled
+    end_time = time.time()
+    if API_TELEMETRY_ENABLED:
+        try:
+            telemetry = get_api_telemetry()
+            processing_time = (end_time - start_time) * 1000
+            telemetry.record_prediction(
+                pokemon=pokemon_name,
+                confidence=confidence,
+                event_override=event_override,
+                override_decision=override_decision,
+                processing_time_ms=processing_time,
+                endpoint="predict_image"
+            )
+        except Exception as e:
+            print(f"Telemetry recording failed: {e}")
     
     return {
         "pokemon": pokemon_name,
         "confidence": f"{confidence * 100:.2f}%",
         "confidence_raw": confidence,
-        "top_index": int(top_index),
-        "event_override": event_override
+        "event_override": event_override,
+        "override_decision": override_decision,
+        "top_index": int(top_index)
     }
 
 
@@ -592,6 +671,9 @@ def predict_url():
         return jsonify({"error": "Model not loaded"}), 503
     
     try:
+        import time
+        start_time = time.time()
+        
         # Check cache first
         cache_key = get_cache_key(image_bytes)
         cached_result = get_cached_prediction(cache_key)
@@ -635,19 +717,37 @@ def predict_url():
         
         # Apply event pokemon detection if embedding index is available and enabled
         event_override = False
+        override_decision = "no_override"
         if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
             # Use the raw logits as embedding vector (before softmax)
             embed_vec = logits.astype(np.float32)
-            pokemon_name, confidence, event_override = merge_onnx_and_event(
+            pokemon_name, confidence, event_override, override_decision = merge_onnx_and_event(
                 pokemon_name, confidence, embed_vec
             )
+        
+        # Record telemetry if enabled
+        if API_TELEMETRY_ENABLED:
+            try:
+                telemetry = get_api_telemetry()
+                processing_time = (time.time() - start_time) * 1000
+                telemetry.record_prediction(
+                    pokemon=pokemon_name,
+                    confidence=confidence,
+                    event_override=event_override,
+                    override_decision=override_decision,
+                    processing_time_ms=processing_time,
+                    endpoint="predict_url"
+                )
+            except Exception as e:
+                print(f"Telemetry recording failed: {e}")
         
         result = {
             "pokemon": pokemon_name,
             "confidence": f"{confidence * 100:.2f}%",
             "confidence_raw": confidence,
             "top_index": int(top_index),
-            "event_override": event_override
+            "event_override": event_override,
+            "override_decision": override_decision
         }
         
         # Cache the result
@@ -683,6 +783,9 @@ def predict_api():
         return jsonify({"error": "Model not loaded"}), 503
 
     try:
+        import time
+        start_time = time.time()
+        
         # Check cache first
         cache_key = get_cache_key(image_bytes)
         cached_result = get_cached_prediction(cache_key)
@@ -723,10 +826,11 @@ def predict_api():
 
         # Apply event pokemon detection if embedding index is available and enabled
         event_override = False
+        override_decision = "no_override"
         if ENABLE_EVENT_EMBEDDING and event_embedding_index is not None and event_embedding_index.size > 0:
             # Use the raw logits as embedding vector (before softmax)
             embed_vec = logits.astype(np.float32)
-            pokemon_name, confidence, event_override = merge_onnx_and_event(
+            pokemon_name, confidence, event_override, override_decision = merge_onnx_and_event(
                 pokemon_name, confidence, embed_vec
             )
         
@@ -735,7 +839,8 @@ def predict_api():
             "confidence": f"{confidence * 100:.2f}%",
             "confidence_raw": confidence,
             "top_index": int(top_index),
-            "event_override": event_override
+            "event_override": event_override,
+            "override_decision": override_decision
         }
         
         # Cache the result

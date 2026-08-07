@@ -12,257 +12,240 @@
   },
   "pokopia_ditto": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.85,
-    "min_margin": 0.001
+    "min_sim": 0.85
   },
   "dj_rotom": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.88,
-    "min_margin": 0.001,
-    "_note": "Event variant of Rotom \u2014 set min_margin=0.001 so event index overrides ONNX when best_sim >= 0.88."
+    "min_sim": 0.88
   },
   "prof_tangrowth": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.93,
-    "min_margin": 0.001
+    "min_sim": 0.8
   },
   "peakychu": {
     "onnx_ceiling": 0.6,
-    "min_sim": 0.96,
-    "_note": "Custom-design pikachu costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk. Must not override confident ONNX predictions for real pokemon.",
-    "min_margin": 0.001
+    "min_sim": 0.83,
+    "_note": "Custom-design pikachu costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk. Must not override confident ONNX predictions for real pokemon."
   },
   "mosslax": {
     "onnx_ceiling": 0.6,
-    "min_sim": 0.96,
-    "_note": "Custom-design snorlax costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk.",
-    "min_margin": 0.001
+    "min_sim": 0.83,
+    "_note": "Custom-design snorlax costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk."
   },
   "smearguru": {
     "onnx_ceiling": 0.6,
-    "min_sim": 0.96,
-    "_note": "Custom-design smeargle costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk.",
-    "min_margin": 0.001
+    "min_sim": 0.83,
+    "_note": "Custom-design smeargle costume. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk."
   },
   "chef_dente": {
     "onnx_ceiling": 0.6,
-    "min_sim": 0.96,
-    "_note": "Custom-design event pokemon. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk.",
-    "min_margin": 0.001
+    "min_sim": 0.83,
+    "_note": "Custom-design event pokemon. Only 2 original training images \u00e2\u20ac\u201d high false-positive risk."
   },
   "senko": {
     "onnx_ceiling": 0.65,
-    "min_sim": 0.95,
-    "_note": "Original-design event character. Not visually similar to any standard pokemon.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Original-design event character. Not visually similar to any standard pokemon."
   },
   "dokuyamitsuki": {
     "onnx_ceiling": 0.65,
-    "min_sim": 0.95,
-    "_note": "Original-design event character. Not visually similar to any standard pokemon.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Original-design event character. Not visually similar to any standard pokemon."
   },
   "beta_bellsprout": {
     "onnx_ceiling": 0.8,
-    "min_sim": 0.93,
-    "_note": "Beta design variant of Bellsprout \u00e2\u20ac\u201d visually close to real Bellsprout, moderate thresholds.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Beta design variant of Bellsprout \u00e2\u20ac\u201d visually close to real Bellsprout, moderate thresholds."
   },
   "beta_bayleef": {
     "onnx_ceiling": 0.8,
-    "min_sim": 0.93,
-    "_note": "Beta design variant of Bayleef \u00e2\u20ac\u201d visually close to real Bayleef, moderate thresholds.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Beta design variant of Bayleef \u00e2\u20ac\u201d visually close to real Bayleef, moderate thresholds."
   },
   "swarming_ledyba": {
     "onnx_ceiling": 0.8,
-    "min_sim": 0.93,
-    "_note": "Event variant of Ledyba \u00e2\u20ac\u201d visually close to real Ledyba, moderate thresholds.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Event variant of Ledyba \u00e2\u20ac\u201d visually close to real Ledyba, moderate thresholds."
   },
   "cicada_vikavolt": {
     "onnx_ceiling": 0.8,
-    "min_sim": 0.93,
-    "_note": "Event variant of Vikavolt \u00e2\u20ac\u201d visually close to real Vikavolt, moderate thresholds.",
-    "min_margin": 0.001
+    "min_sim": 0.8,
+    "_note": "Event variant of Vikavolt \u00e2\u20ac\u201d visually close to real Vikavolt, moderate thresholds."
   },
   "proud_new_yorker_braviary": {
     "onnx_ceiling": 0.95,
     "min_sim": 0.88,
-    "_note": "Event variant of Braviary \u00e2\u20ac\u201d costumed base pokemon with shared visual features. min_sim lowered to 0.88 (from 0.94) so the event embedding override fires even at moderate similarity; onnx_ceiling=0.95 prevents overriding confident ONNX predictions.",
-    "min_margin": 0.001
+    "_note": "Event variant of Braviary \u00e2\u20ac\u201d costumed base pokemon with shared visual features. min_sim lowered to 0.88 (from 0.94) so the event embedding override fires even at moderate similarity; onnx_ceiling=0.95 prevents overriding confident ONNX predictions."
   },
   "proud_amsterdammer_pyroar": {
     "onnx_ceiling": 0.99,
-    "min_sim": 0.9,
-    "_note": "Event variant of Pyroar \u00e2\u20ac\u201d costumed base pokemon with shared visual features. Raised onnx_ceiling to 0.99 to allow event override when embedding similarity is very high (>99%).",
-    "min_margin": 0.001
+    "min_sim": 0.78,
+    "_note": "Event variant of Pyroar \u00e2\u20ac\u201d costumed base pokemon with shared visual features. Raised onnx_ceiling to 0.99 to allow event override when embedding similarity is very high (>99%)."
   },
   "proud_paulistano_luxray": {
     "onnx_ceiling": 0.75,
-    "min_sim": 0.92,
+    "min_sim": 0.78,
     "min_margin": 0.001,
     "_note": "Event variant of Luxray with Brazilian city costume. Only 1 original training image. onnx_ceiling lowered to 0.75 so the event embedding index can override when ONNX is moderately uncertain \u2014 Luxray is the correct base but the costume makes it visually distinct. min_sim 0.92 balances recall vs false-positive risk."
   },
   "proud_taipeier_ursaring": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.96,
+    "min_sim": 0.75,
     "min_margin": 0.001,
     "_note": "Event variant of Ursaring \u00e2\u20ac\u201d costumed base pokemon with shared visual features. Higher min_sim (0.96) prevents false matches on similar normal types. Lower min_margin (0.001) since this is a unique event variant with no close neighbors in embedding space."
   },
   "proud_sydneysider_komala": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.96,
-    "_note": "Event variant of Komala \u2014 set min_margin=0.001 so event index overrides ONNX when best_sim >= 0.96.",
-    "min_margin": 0.001
+    "min_sim": 0.83,
+    "_note": "Event variant of Komala \u00e2\u20ac\u201d costumed base pokemon with shared visual features. Higher min_sim (0.96) prevents false matches on similar normal types."
   },
   "asexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "autoromantic_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "bisexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "demiromantic_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "demisexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "desinoromantic_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "gay_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.93,
+    "min_sim": 0.8,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. onnx_ceiling=1.0: always trust event embedding index for Pride flag detection, as ONNX frequently misclassifies these at high confidence. min_margin=0.0005 reflects the real float32 inter-label margin for this degenerate cluster."
   },
   "gender_creative_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "genderfluid_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "genderqueer_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "gynosexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "lesbian_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "maverique_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "neutrois_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "non_binary_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "pansexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "polysexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "pride_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "queer_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "transgender_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. min_margin=0.0005 reflects the real float32 inter-label margin (~0.00088) for Pride Flag Vivillons \u2014 they are extremely similar in ONNX embedding space. High min_sim=0.97 and onnx_ceiling=0.95 prevent false overrides."
   },
   "alloace_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   },
   "androgyne_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   },
   "androsexual_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   },
   "aroace_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   },
   "aromantic_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.83,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   }

@@ -1,0 +1,12 @@
+{
+  "env": {
+    "ENABLE_GPU": "false",
+    "ENABLE_TTA": "false",
+    "MAX_WORKERS": "2",
+    "ENABLE_CACHE": "true",
+    "CACHE_SIZE": "1000",
+    "ENABLE_EVENT_EMBEDDING": "true",
+    "FEEDBACK_ENABLED": "true",
+    "PERCEPTUAL_CACHE_ENABLED": "true"
+  }
+}
