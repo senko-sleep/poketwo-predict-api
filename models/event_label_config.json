@@ -238,7 +238,7 @@
   },
   "alloace_flag_vivillon": {
     "onnx_ceiling": 0.95,
-    "min_sim": 0.97,
+    "min_sim": 0.98,
     "min_margin": 0.0005,
     "_note": "Event variant of Vivillon \u2014 Pride flag pattern. Costumed base pokemon with shared visual features. Very low min_margin (0.0005) for Pride Flag Vivillons due to extreme degenerate cluster - they are nearly identical in embedding space, so margins between them are naturally tiny. Still requires high similarity (0.97) and blocks overrides when ONNX is confident (>=95%)."
   },

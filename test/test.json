@@ -1,10 +1,6 @@
 {
   "test_images": [
     {
-      "url": "https://images-ext-1.discordapp.net/external/9c9M10rPZaxqGDC-D17qnBDv8n49Z4Hfp8RbN0MS3BQ/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1074905720073506876/6e92a896fc8009a836763720c223da70.png?format=webp&quality=lossless",
-      "name": "sammy"
-    },
-    {
       "url": "https://media.discordapp.net/attachments/1534754659405795349/1535102667356119155/pokemon.jpg?ex=6a768b44&is=6a7539c4&hm=b6677bb1592f940bc7b08b8924b929a66abaa3c68659e3ae0750e14a86931855&=&format=webp",
       "name": "non_binary_flag_vivillon"
     },

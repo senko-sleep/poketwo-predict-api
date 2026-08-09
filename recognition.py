@@ -321,12 +321,7 @@ class PokemonRecognizer:
                     best_label = label
         
         # Ensure best_label is a proper Python string
-        if best_label is not None:
-            best_label_str = str(best_label)
-        else:
-            best_label_str = None
-        
-        # Check if best match meets per-label thresholds
+        best_label_str = str(best_label) if best_label is not None else None
         if best_label_str is not None and isinstance(best_label_str, str) and len(best_label_str) > 0:
             try:
                 if best_label_str in self.event_label_config:
@@ -335,12 +330,16 @@ class PokemonRecognizer:
                     min_sim = config.get('min_sim', 0.93)
                     min_margin = config.get('min_margin', 0.005)
                     
+                    print(f"DEBUG: Event check - label={best_label_str}, onnx_conf={onnx_confidence:.4f}, ceiling={onnx_ceiling:.4f}, sim={best_similarity:.4f}")
+                    
                     # Check if ONNX confidence is below ceiling (allow event override)
                     if onnx_confidence >= onnx_ceiling:
+                        print(f"DEBUG: ONNX too confident ({onnx_confidence:.4f} >= {onnx_ceiling:.4f}), skipping event override")
                         return None  # ONNX is too confident, don't override
                     
                     # Check if similarity meets minimum threshold
                     if best_similarity < min_sim:
+                        print(f"DEBUG: Similarity too low ({best_similarity:.4f} < {min_sim:.4f}), skipping event override")
                         return None  # Similarity too low
                     
                     # Check margin between best and second best
@@ -412,6 +411,7 @@ class PokemonRecognizer:
         # Try embedding-based prediction for event Pokemon (using ONNX confidence)
         embedding_result = self.predict_with_embeddings(image_bytes, onnx_confidence=confidence)
         if embedding_result:
+            print(f"DEBUG: Event override - ONNX predicted {pokemon_name} ({confidence:.2f}), event predicted {embedding_result[0]} ({embedding_result[1]:.2f})")
             return embedding_result
         
         # Fall back to ONNX prediction
