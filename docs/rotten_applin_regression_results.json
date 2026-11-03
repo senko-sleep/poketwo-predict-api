@@ -1,0 +1,11 @@
+{
+  "images": 592,
+  "correct_before_after": [
+    572,
+    572
+  ],
+  "changed_predictions": [],
+  "false_rotten_matches": [],
+  "new_median_ms": 66.92864999968151,
+  "new_p95_ms": 108.2848850002847
+}

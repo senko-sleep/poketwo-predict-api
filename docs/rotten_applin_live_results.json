@@ -1,0 +1,242 @@
+{
+  "endpoint": "https://allenposton14--pokemon-predict-api-asgi-app-entrypoint.modal.run",
+  "sha256": "f48c128f645259699f8a473b97b39d4eb2e23a52b83adb5b8165ffebf6ba66b4",
+  "cases": [
+    {
+      "case": "original",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9976102709770203,
+      "prediction_time_ms": 102.26,
+      "cached": false
+    },
+    {
+      "case": "800px-jpeg95",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9975961446762085,
+      "prediction_time_ms": 47.02,
+      "cached": false
+    },
+    {
+      "case": "800px-jpeg70",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.77%",
+      "confidence_raw": 0.9976702332496643,
+      "prediction_time_ms": 51.2,
+      "cached": false
+    },
+    {
+      "case": "800px-jpeg40",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.75%",
+      "confidence_raw": 0.9974861145019531,
+      "prediction_time_ms": 45.7,
+      "cached": false
+    },
+    {
+      "case": "640px-jpeg95",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9975724816322327,
+      "prediction_time_ms": 45.88,
+      "cached": false
+    },
+    {
+      "case": "640px-jpeg70",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.77%",
+      "confidence_raw": 0.9976694583892822,
+      "prediction_time_ms": 44.09,
+      "cached": false
+    },
+    {
+      "case": "640px-jpeg40",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9975646734237671,
+      "prediction_time_ms": 45.03,
+      "cached": false
+    },
+    {
+      "case": "400px-jpeg95",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.75%",
+      "confidence_raw": 0.9974778294563293,
+      "prediction_time_ms": 42.67,
+      "cached": false
+    },
+    {
+      "case": "400px-jpeg70",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.72%",
+      "confidence_raw": 0.997218132019043,
+      "prediction_time_ms": 47.58,
+      "cached": false
+    },
+    {
+      "case": "400px-jpeg40",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.69%",
+      "confidence_raw": 0.9968917369842529,
+      "prediction_time_ms": 47.76,
+      "cached": false
+    },
+    {
+      "case": "200px-jpeg95",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.75%",
+      "confidence_raw": 0.997536838054657,
+      "prediction_time_ms": 42.56,
+      "cached": false
+    },
+    {
+      "case": "200px-jpeg70",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.60%",
+      "confidence_raw": 0.9960039258003235,
+      "prediction_time_ms": 43.22,
+      "cached": false
+    },
+    {
+      "case": "200px-jpeg40",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.51%",
+      "confidence_raw": 0.9951292276382446,
+      "prediction_time_ms": 49.61,
+      "cached": false
+    },
+    {
+      "case": "mirrored-webp65",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.78%",
+      "confidence_raw": 0.9978018999099731,
+      "prediction_time_ms": 55.53,
+      "cached": false
+    },
+    {
+      "case": "repeat-original",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9976102709770203,
+      "prediction_time_ms": 106.45,
+      "cached": false
+    },
+    {
+      "case": "repeat-original",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9976102709770203,
+      "prediction_time_ms": 55.0,
+      "cached": false
+    },
+    {
+      "case": "repeat-original",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9976102709770203,
+      "prediction_time_ms": 54.56,
+      "cached": false
+    },
+    {
+      "case": "repeat-original",
+      "pokemon": "rotten_applin",
+      "pokemon_id": 50308,
+      "confidence": "99.76%",
+      "confidence_raw": 0.9976102709770203,
+      "prediction_time_ms": 57.71,
+      "cached": false
+    }
+  ],
+  "controls": [
+    {
+      "file": "bagon_spawn.jpg",
+      "pokemon": "bagon",
+      "pokemon_id": null,
+      "confidence": "95.21%",
+      "confidence_raw": 0.9520771503448486,
+      "prediction_time_ms": 55.8,
+      "cached": false
+    },
+    {
+      "file": "dj_rotom.jpg",
+      "pokemon": "dj_rotom",
+      "pokemon_id": null,
+      "confidence": "99.83%",
+      "confidence_raw": 0.998334527015686,
+      "prediction_time_ms": 54.02,
+      "cached": false
+    },
+    {
+      "file": "mosslax.jpg",
+      "pokemon": "mosslax",
+      "pokemon_id": null,
+      "confidence": "99.71%",
+      "confidence_raw": 0.9970962405204773,
+      "prediction_time_ms": 51.31,
+      "cached": false
+    },
+    {
+      "file": "peakychu.jpg",
+      "pokemon": "peakychu",
+      "pokemon_id": null,
+      "confidence": "99.84%",
+      "confidence_raw": 0.998375415802002,
+      "prediction_time_ms": 53.76,
+      "cached": false
+    },
+    {
+      "file": "smearguru.jpg",
+      "pokemon": "smearguru",
+      "pokemon_id": null,
+      "confidence": "99.88%",
+      "confidence_raw": 0.9988061189651489,
+      "prediction_time_ms": 53.59,
+      "cached": false
+    },
+    {
+      "file": "halloween_2026/enchanted_applin.png",
+      "pokemon": "enchanted_applin",
+      "pokemon_id": null,
+      "confidence": "100.00%",
+      "confidence_raw": 1.0,
+      "prediction_time_ms": 53.1,
+      "cached": false
+    },
+    {
+      "file": "halloween_2026_spawns/witch_meowscarada.jpg",
+      "pokemon": "witch_meowscarada",
+      "pokemon_id": null,
+      "confidence": "100.00%",
+      "confidence_raw": 0.9999998807907104,
+      "prediction_time_ms": 55.42,
+      "cached": false
+    }
+  ],
+  "source_url_result": {
+    "pokemon": "rotten_applin",
+    "pokemon_id": 50308,
+    "confidence": "99.76%",
+    "confidence_raw": 0.9976102709770203,
+    "prediction_time_ms": 53.38,
+    "cached": false
+  },
+  "median_inference_ms": 47.67
+}

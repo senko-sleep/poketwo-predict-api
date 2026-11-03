@@ -7,7 +7,7 @@
     "swarming_ledyba": 148,
     "cicada_vikavolt": 74,
     "pokopia_ditto": 2834,
-    "prof_tangrowth": 436,
+    "prof_tangrowth": 528,
     "chef_dente": 436,
     "dj_rotom": 436,
     "smearguru": 436,
@@ -41,7 +41,22 @@
     "androgyne_flag_vivillon": 218,
     "androsexual_flag_vivillon": 218,
     "aroace_flag_vivillon": 218,
-    "aromantic_flag_vivillon": 218
+    "aromantic_flag_vivillon": 218,
+    "imp_victini": 314,
+    "cherub_victini": 314,
+    "castle_palossand": 314,
+    "haunted_house_palossand": 345,
+    "cauldron_reuniclus": 314,
+    "elixir_reuniclus": 314,
+    "celestial_absol": 314,
+    "void_absol": 314,
+    "shrivelled_sunflora": 314,
+    "statue_simipour": 314,
+    "medusa_simipour": 314,
+    "witch_meowscarada": 345,
+    "oracle_meowscarada": 314,
+    "enchanted_applin": 314,
+    "rotten_applin": 97
   },
-  "total_entries": 12915
+  "total_entries": 17562
 }

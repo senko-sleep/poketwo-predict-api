@@ -92,8 +92,9 @@
       "prof_tangrowth_1.png",
       "prof_tangrowth_3.png"
     ],
-    "augmented_count": 216,
-    "last_updated": "2026-06-03T15:09:09.650849"
+    "augmented_count": 308,
+    "last_updated": "2026-11-02T03:37:11.387075+00:00",
+    "spawnlike_augments": 92
   },
   "chef_dente": {
     "added_at": "2026-06-03T15:21:58.423641",
@@ -372,5 +373,142 @@
     ],
     "augmented_count": 108,
     "last_updated": "2026-07-31T08:40:12.883873"
+  },
+  "imp_victini": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "imp_victini.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "cherub_victini": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "cherub_victini.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "castle_palossand": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "castle_palossand.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "haunted_house_palossand": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "haunted_house_palossand.png"
+    ],
+    "augmented_count": 235,
+    "last_updated": "2026-11-02T03:37:11.387075+00:00",
+    "spawnlike_augments": 127
+  },
+  "cauldron_reuniclus": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "cauldron_reuniclus.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "elixir_reuniclus": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "elixir_reuniclus.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "celestial_absol": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "celestial_absol.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "void_absol": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "void_absol.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "shrivelled_sunflora": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "shrivelled_sunflora.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "statue_simipour": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "statue_simipour.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "medusa_simipour": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "medusa_simipour.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "witch_meowscarada": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "witch_meowscarada.png"
+    ],
+    "augmented_count": 235,
+    "last_updated": "2026-11-02T03:37:11.387075+00:00",
+    "spawnlike_augments": 127
+  },
+  "oracle_meowscarada": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "oracle_meowscarada.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "enchanted_applin": {
+    "added_at": "2026-11-01T16:01:05.017861+00:00",
+    "originals": [
+      "enchanted_applin.png"
+    ],
+    "augmented_count": 204,
+    "last_updated": "2026-11-02T03:22:20.223394+00:00",
+    "spawnlike_augments": 96
+  },
+  "rotten_applin": {
+    "id": 50308,
+    "name": "Rotten Applin",
+    "base_species": "applin",
+    "sprite_url": "https://cdn.poketwo.net/images/50308.png",
+    "originals": [
+      "50308.png"
+    ],
+    "spawnlike_augments": 96,
+    "augmentation_seed": 5
   }
 }
